@@ -18,13 +18,7 @@ jobs:
       - name: Update Version in src/db/version.ts
         run: |
           SHA_SHORT=$(git rev-parse --short "$GITHUB_SHA")
-          
-          cat << EOF > src/db/version.ts
-          import type { Version } from "../types";
-          
-          export const CURRENT_MODEL_VERSION = "$SHA_SHORT" as Version;
-          EOF
-          
+          sed -i "s/CURRENT_MODEL_VERSION = \"[^\"]*\"/CURRENT_MODEL_VERSION = \"$SHA_SHORT\"/" src/db/version.ts
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add src/db/version.ts
